@@ -94,7 +94,9 @@
 			var request = new XMLHttpRequest();
 			request.addEventListener("load", function() {
 				that.size = Number(request.getResponseHeader("Content-Length"));
-				if (request.getResponseHeader("Accept-Ranges") == "bytes")
+                
+                // Some HTTP servers do not emit the Accept-Ranges header :(
+				if (true || request.getResponseHeader("Accept-Ranges") == "bytes")
 					callback();
 				else
 					onerror(ERR_HTTP_RANGE);
