@@ -111,6 +111,7 @@
 			request.open("GET", url);
 			request.responseType = "arraybuffer";
 			request.setRequestHeader("Range", "bytes=" + index + "-" + (index + length - 1));
+      request.setRequestHeader("If-None-Match", "webkit-no-cache");
 			request.addEventListener("load", function() {
 				callback(request.response);
 			}, false);
