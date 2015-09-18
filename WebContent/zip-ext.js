@@ -87,7 +87,7 @@
 	HttpReader.prototype = new Reader();
 	HttpReader.prototype.constructor = HttpReader;
 
-	function HttpRangeReader(url) {
+	function HttpRangeReader(url, bust) {
 		var that = this;
 
 		function init(callback, onerror) {
@@ -102,7 +102,7 @@
 					onerror(ERR_HTTP_RANGE);
 			}, false);
 			request.addEventListener("error", onerror, false);
-			request.open("HEAD", url);
+			request.open("HEAD", url + (bust ? ("?b=" + Date.now()) : ""));
 			request.send();
 		}
 
@@ -232,7 +232,7 @@
 			});
 		};
 		ZipDirectoryEntry.prototype.importHttpContent = function(URL, useRangeHeader, onend, onerror) {
-			this.importZip(useRangeHeader ? new HttpRangeReader(URL) : new HttpReader(URL), onend, onerror);
+			this.importZip(useRangeHeader ? new HttpRangeReader(URL, true) : new HttpReader(URL), onend, onerror);
 		};
 		zip.fs.FS.prototype.importHttpContent = function(URL, useRangeHeader, onend, onerror) {
 			this.entries = [];
